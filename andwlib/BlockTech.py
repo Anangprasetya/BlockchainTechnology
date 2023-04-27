@@ -32,7 +32,24 @@ class BlockChain:
 
     
     def append_block(self, hash_prev_block, nonce):
-        pass
+        myblock = {
+            'index' : len(self.chain),
+            'timestamp' : time(),
+            'transaction' : self.current_transactions,
+            'nonce' : nonce,
+            'hash_prev_block' : hash_prev_block,
+        }
+
+        print("myblock : ")
+        print(myblock)
+
+        self.chain.append(myblock)
+        self.current_transactions = []
+
+        print("self.chain : ")
+        print(self.chain)
+
+        return myblock
 
 
     def proof_of_work(self, index, hash_prev_block, transaction):
@@ -40,6 +57,8 @@ class BlockChain:
 
         while self.not_valid_proof(index, hash_prev_block, transaction, nonce):
             nonce = nonce + 1
+
+        return nonce
 
 
     def not_valid_proof(self, index, hash_prev_block, transaction, nonce):
