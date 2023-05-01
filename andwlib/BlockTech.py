@@ -1,4 +1,3 @@
-import sys
 import hashlib
 import json
 import requests
@@ -9,6 +8,10 @@ from uuid import uuid4
 
 class BlockChain:
     difficulty_target_atauKesulitanTarget = "2001"
+
+    @property
+    def last_block(self):
+        return self.chain[-1]
 
     def __init__(self):
         self.chain = []
@@ -78,3 +81,21 @@ class BlockChain:
             return False
         
         return True
+    
+    def add_transaction(self, sender, reception, amount):
+        self.current_transactions.append({
+            'amount' : amount,
+            'reception' : reception,
+            'sender' : sender
+        })
+
+        return self.last_block['index'] + 1
+    
+
+class Address:
+    
+    def __init__(self):
+        self.add = str(uuid4()).replace('-', "")
+
+    def get(self):
+        return self.add
