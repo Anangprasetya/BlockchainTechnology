@@ -72,5 +72,39 @@ def transaksi_baru():
     return jsonify(resp), 200
 
 
+@blockchainWebApp.route('/nodes/add_nodes', methods=['POST'])
+def addnodes():
+    vals = request.get_json()
+    nodes = vals.get('nodes')
+
+    if nodes is None:
+        return "Error, nodes harus ada", 400
+    
+    for node in nodes:
+        blockchain.add_node(node)
+
+    resp = {
+        'pesan' : 'Node baru berhasil ditambah',
+        'nodes' : list(blockchain.nodes)
+    }
+    return jsonify(resp), 200
+
+@blockchainWebApp.route('/nodes/sync', methods=['GET'])
+def sync():
+    update_data = blockchain.update_blockchain()
+    if update_data:
+        resp = {
+            'pesan' : 'Chain berhasil di update dengan data terbaru',
+            'blockchain' : blockchain.chain
+        }
+    else:
+        resp = {
+                'pesan' : 'Chain kondisi terbaru',
+                'blockchain' : blockchain.chain
+            }
+        
+    return jsonify(resp), 200
+
+
 if __name__ == "__main__":
     blockchainWebApp.run(host='0.0.0.0', port=int(sys.argv[1]))

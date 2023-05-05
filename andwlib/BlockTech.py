@@ -26,6 +26,8 @@ class BlockChain:
             nonce = self.proof_of_work(0, genesis_hash, [])
         )
 
+        self.nodes = set()
+
 
     def hash_block(self, block):
         block_encode = json.dumps(block, sort_keys=True).encode()
@@ -90,8 +92,58 @@ class BlockChain:
         })
 
         return self.last_block['index'] + 1
-    
 
+    def add_node(self, address):
+        parse_url = urlparse(address)
+        self.nodes.add(parse_url.netloc)
+        print("parse_url.netloc")
+        print(parse_url.netloc)
+    
+    def valid_change(self, chain):
+        last_block = chain[0]
+        current_index = 1
+
+        while current_index < len(chain):
+            block = chain[current_index]
+
+            if block['hash_prev_block'] != self.hash_block(last_block):
+                return False
+
+            if self.not_valid_proof(
+                current_index,
+                block['hash_prev_block'],
+                block['transaction'],
+                block['nonce']
+                ):
+                return False
+
+            last_block = block
+            current_index += 1
+
+        return True
+
+    def update_blockchain(self):
+        neighbours = self.nodes
+        new_chain = None
+
+        max_length = len(self.chain)
+
+        for node in neighbours:
+            resp = requests.get(f'http:://{node}/blockchain')
+
+            if resp.status_code == 200:
+                panjang = resp.json()['length']
+                chain = resp.json()['chain']
+
+                if panjang > max_length and self.valid_change(chain):
+                    max_length = panjang
+                    new_chain = chain
+
+                if new_chain:
+                    self.chain = new_chain
+                    return True
+                
+        return False
 class Address:
     
     def __init__(self):
