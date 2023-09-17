@@ -1,34 +1,51 @@
 pragma solidity ^0.8.14;
 
+// Anang Nur Prasetya
+// Blockchain Developer
+
 interface IERC20 {
-
     function totalSupply() external view returns (uint256);
+
     function balanceOf(address account) external view returns (uint256);
-    function allowance(address owner, address spender) external view returns (uint256);
 
-    function transfer(address recipient, uint256 amount) external returns (bool);
+    function allowance(
+        address owner,
+        address spender
+    ) external view returns (uint256);
+
+    function transfer(
+        address recipient,
+        uint256 amount
+    ) external returns (bool);
+
     function approve(address spender, uint256 amount) external returns (bool);
-    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
 
+    function transferFrom(
+        address sender,
+        address recipient,
+        uint256 amount
+    ) external returns (bool);
 
     event Transfer(address indexed from, address indexed to, uint256 value);
-    event Approval(address indexed owner, address indexed spender, uint256 value);
+    event Approval(
+        address indexed owner,
+        address indexed spender,
+        uint256 value
+    );
 }
-
 
 contract BasicERC20 is IERC20 {
     using SafeMath for uint256;
 
     string public name;
     string public symbol;
-    uint8  public decimals;
+    uint8 public decimals;
     uint256 public _totalSupply;
 
     mapping(address => uint256) balances;
-    mapping(address => mapping (address => uint256)) allowed;
+    mapping(address => mapping(address => uint256)) allowed;
 
-
-    constructor()  {
+    constructor() {
         name = "Basic Token";
         symbol = "BT";
         decimals = 18;
@@ -36,15 +53,20 @@ contract BasicERC20 is IERC20 {
         balances[msg.sender] = _totalSupply;
     }
 
-    function totalSupply() public override view returns (uint256) {
+    function totalSupply() public view override returns (uint256) {
         return _totalSupply;
     }
 
-    function balanceOf(address tokenOwner) public override view returns (uint256) {
+    function balanceOf(
+        address tokenOwner
+    ) public view override returns (uint256) {
         return balances[tokenOwner];
     }
 
-    function transfer(address receiver, uint256 numTokens) public override returns (bool) {
+    function transfer(
+        address receiver,
+        uint256 numTokens
+    ) public override returns (bool) {
         require(numTokens <= balances[msg.sender]);
         balances[msg.sender] = balances[msg.sender].sub(numTokens);
         balances[receiver] = balances[receiver].add(numTokens);
@@ -52,17 +74,27 @@ contract BasicERC20 is IERC20 {
         return true;
     }
 
-    function approve(address delegate, uint256 numTokens) public override returns (bool) {
+    function approve(
+        address delegate,
+        uint256 numTokens
+    ) public override returns (bool) {
         allowed[msg.sender][delegate] = numTokens;
         emit Approval(msg.sender, delegate, numTokens);
         return true;
     }
 
-    function allowance(address owner, address delegate) public override view returns (uint) {
+    function allowance(
+        address owner,
+        address delegate
+    ) public view override returns (uint) {
         return allowed[owner][delegate];
     }
 
-    function transferFrom(address owner, address buyer, uint256 numTokens) public override returns (bool) {
+    function transferFrom(
+        address owner,
+        address buyer,
+        uint256 numTokens
+    ) public override returns (bool) {
         require(numTokens <= balances[owner]);
         require(numTokens <= allowed[owner][msg.sender]);
 
@@ -76,13 +108,13 @@ contract BasicERC20 is IERC20 {
 
 library SafeMath {
     function sub(uint256 a, uint256 b) internal pure returns (uint256) {
-      assert(b <= a);
-      return a - b;
+        assert(b <= a);
+        return a - b;
     }
 
     function add(uint256 a, uint256 b) internal pure returns (uint256) {
-      uint256 c = a + b;
-      assert(c >= a);
-      return c;
+        uint256 c = a + b;
+        assert(c >= a);
+        return c;
     }
 }
