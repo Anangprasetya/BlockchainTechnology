@@ -64,6 +64,7 @@ const workChain = new Blockchain();
 workChain.addBlock(new Block(Date.now().toString(), ["TRANSAKSI 1"]));
 workChain.addBlock(new Block(Date.now().toString(), ["TRANSAKSI 2"]));
 workChain.addBlock(new Block(Date.now().toString(), ["TRANSAKSI 3"]));
+workChain.addBlock(new Block(Date.now().toString(), ["TRANSAKSI 4"]));
 
 
 console.log(workChain);
