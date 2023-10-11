@@ -16,8 +16,8 @@ function TokenPaymentPage() {
     const handleId = (event: any) => setTextId(String(event.target.value));
 
     const { address } = useAccount();
-    const contractAddressTokenExample = '0xAE4bC7567cCe37371e616F65075992B0a05486fC';
-    const contractAddressTokenPayment = '0xE54A0711802d0B2D72753DaCdc73dE25b61a4AE5';
+    const contractAddressTokenExample = '0x1a1b296ba15DaF6f2CC91D173aF1dbD7cE1723EA';
+    const contractAddressTokenPayment = '0x6f38dFA8563B32325eDE9dcF48AaCBbD318d9459';
     const { data } = useContractRead({
         address: contractAddressTokenExample,
         abi: TokenExampleAbi as any,

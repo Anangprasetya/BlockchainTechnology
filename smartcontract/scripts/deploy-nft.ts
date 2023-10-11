@@ -13,3 +13,6 @@ main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
 });
+
+
+// NFT Example: 0x03960D31ffAE37AA0a7EC73e4F99a7cf69810d62

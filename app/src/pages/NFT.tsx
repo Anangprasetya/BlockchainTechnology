@@ -21,7 +21,7 @@ function NFTPage() {
     const handleApproved = (event: any) => setApproved(event.target.value);
 
     const { address } = useAccount();
-    const contractAddressNftExample = '0xc21d0A58a4FF3ab84EFe87993edA0473DFDA930C';
+    const contractAddressNftExample = '0x03960D31ffAE37AA0a7EC73e4F99a7cf69810d62';
     const { data: dataBalanceOf } = useContractRead({
         address: contractAddressNftExample,
         abi: NftExampleAbi as any,
