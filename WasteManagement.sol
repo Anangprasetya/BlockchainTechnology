@@ -61,12 +61,13 @@ contract WasteManagement {
         string calldata _email,
         string calldata _phoneNumber,
         string calldata _password,
+        address _userAddress,
         UserType _userType
     ) public onlyOwner {
         require(userEmailToAddress[_email] == address(0), "Email is already registered");
 
-        users[msg.sender] = User(_fullName, _email, _phoneNumber, _password, _userType);
-        userEmailToAddress[_email] = msg.sender;
+        users[_userAddress] = User(_fullName, _email, _phoneNumber, _password, _userType);
+        userEmailToAddress[_email] = _userAddress;
     }
 
 
